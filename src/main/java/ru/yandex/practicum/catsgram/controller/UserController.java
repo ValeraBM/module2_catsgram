@@ -6,6 +6,7 @@ import ru.yandex.practicum.catsgram.model.User;
 import ru.yandex.practicum.catsgram.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -17,8 +18,11 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping
-    public List<User> findAll() {
+    @GetMapping(value = {"", "/{nickname}"})
+    public List<User> findAll(@PathVariable Optional<String> nickname) {
+        if (nickname.isPresent()) {
+            return service.findByNickname(nickname.get());
+        }
         return service.findAll();
     }
 
@@ -30,5 +34,10 @@ public class UserController {
     @PutMapping
     public User updateUser(@RequestBody User user) {
         return service.update(user);
+    }
+
+    @GetMapping("/user/{email}")
+    public User findUserByEmail(@PathVariable String email) {
+        return service.findUserByEmail(email);
     }
 }

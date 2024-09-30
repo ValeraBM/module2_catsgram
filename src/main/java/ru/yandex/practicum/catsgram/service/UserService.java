@@ -43,4 +43,13 @@ public class UserService {
         }
         return users.get(email);
     }
+
+    public List<User> findByNickname(String nickname){
+        List<User> result = new ArrayList<>();
+        for(User user : users.values()){
+            if (user.getNickname().equals(nickname))
+                result.add(user);
+        }
+        return result;
+    }
 }
